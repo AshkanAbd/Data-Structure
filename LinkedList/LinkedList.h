@@ -54,7 +54,6 @@ public:
 
     ~LinkedList() {
         delete (LinkedList::head);
-        delete (LinkedList::size);
     }
 
     void add(type item) {
