@@ -12,10 +12,12 @@ class Item {
 private:
     void *data;
     void *link;
+    void *back_link;
 public:
     Item() {
         Item::data = nullptr;
         Item::link = nullptr;
+        Item::back_link = nullptr;
     }
 
     ~Item() = default;
@@ -24,8 +26,16 @@ public:
         Item::data = data;
     }
 
+    void set_back_link(void *back_link) {
+        Item::back_link = back_link;
+    }
+
     void set_link(void *link) {
         Item::link = link;
+    }
+
+    void *get_back_link() const {
+        return back_link;
     }
 
     void *get_data() {
@@ -135,6 +145,18 @@ public:
         size--;
     }
 
+    virtual void insert(int index, type item) {
+        int i = 0;
+        Item *current = head;
+        if (index + 1 > size) throw std::invalid_argument("Index out of bound exception");
+        for (; i < index; ++i) {
+            current = (Item *) current->get_link();
+        }
+        void *data = malloc(sizeof(item));
+        memcpy(data, &item, sizeof(item));
+        current->set_data(data);
+    }
+
     int get_size() {
         return size;
     }
@@ -173,6 +195,10 @@ private:
     void remove(int index) override {
         LinkedList<type>::remove(index);
     }
+
+    void insert(int index, type item) override {
+        LinkedList<type>::insert(index, item);
+    }
 };
 
 template<typename type, typename _Alloc = std::allocator<type> >
@@ -201,12 +227,16 @@ private:
         return LinkedList<type>::get(index);
     }
 
-    int index_of(type object, int start) override {
+    int index_of(type object, int start = 0) override {
         return LinkedList<type>::index_of(object, start);
     }
 
     void remove(int index) override {
         LinkedList<type>::remove(index);
+    }
+
+    void insert(int index, type item) override {
+        LinkedList<type>::insert(index, item);
     }
 };
 
