@@ -1,2 +1,2 @@
 # Data-Structure
-data structure
+some data structure implementation such as LinkList ,sort algorithms,... 
