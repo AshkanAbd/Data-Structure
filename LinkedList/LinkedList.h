@@ -106,6 +106,17 @@ public:
         }
     }
 
+    void to_arr(void *des) {
+        type *t = ((type *) des);
+        Item *last = head;
+        int i = 0;
+        for (;; i++) {
+            t[i] = *((type *) last->get_data());
+            if (last->get_link() == nullptr) break;
+            last = (Item *) last->get_link();
+        }
+    }
+
     void remove(int index) {
         int i = 0;
         Item *last = nullptr, *current = head, *next;
