@@ -40,7 +40,7 @@ public:
 
 template<typename type, typename _Alloc = std::allocator<type> >
 class LinkedList {
-private:
+protected:
     int size;
     Item *head;
 public:
@@ -49,7 +49,7 @@ public:
         LinkedList::head = nullptr;
     }
 
-    ~LinkedList() {
+    virtual ~LinkedList() {
         delete (LinkedList::head);
     }
 
@@ -75,7 +75,7 @@ public:
         size++;
     }
 
-    type get(int index) {
+    virtual type get(int index) {
         int i = 0;
         Item *last = head;
         if (index + 1 > size) throw std::invalid_argument("Index out of bound exception");
@@ -85,7 +85,7 @@ public:
         return *((type *) last->get_data());
     }
 
-    int index_of(type object, int start = 0) {
+    virtual int index_of(type object, int start = 0) {
         Item *q = head;
         int i = start;
         for (;; i++) {
@@ -106,7 +106,7 @@ public:
         }
     }
 
-    void to_arr(void *des) {
+    virtual void to_arr(void *des) {
         type *t = ((type *) des);
         Item *last = head;
         int i = 0;
@@ -117,7 +117,7 @@ public:
         }
     }
 
-    void remove(int index) {
+    virtual void remove(int index) {
         int i = 0;
         Item *last = nullptr, *current = head, *next;
         if (index + 1 > size) throw std::invalid_argument("Index out of bound exception");
@@ -140,5 +140,74 @@ public:
     }
 };
 
+template<typename type, typename _Alloc = std::allocator<type> >
+class Stack : public LinkedList<type> {
+public:
+    Stack() : LinkedList<type>() {
+
+    }
+
+    ~Stack() override {
+        delete (Stack<type>::head);
+    }
+
+    type pop() {
+        type t = Stack<type>::get(Stack<type>::get_size() - 1);
+        LinkedList<type>::remove(Stack<type>::get_size() - 1);
+        return t;
+    }
+
+    type poll() {
+        return Stack<type>::get(Stack<type>::get_size() - 1);
+    }
+
+private:
+    type get(int index) override {
+        return LinkedList<type>::get(index);
+    }
+
+    int index_of(type object, int start = 0) override {
+        return LinkedList<type>::index_of(object, start);
+    }
+
+    void remove(int index) override {
+        LinkedList<type>::remove(index);
+    }
+};
+
+template<typename type, typename _Alloc = std::allocator<type> >
+class Queue : public LinkedList<type> {
+public:
+    Queue() : LinkedList<type>() {
+
+    }
+
+    ~Queue() override {
+        delete (Queue<type>::head);
+    }
+
+    type pop() {
+        type t = LinkedList<type>::get(0);
+        LinkedList<type>::remove(0);
+        return t;
+    }
+
+    type poll() {
+        return LinkedList<type>::get(0);
+    }
+
+private:
+    type get(int index) override {
+        return LinkedList<type>::get(index);
+    }
+
+    int index_of(type object, int start) override {
+        return LinkedList<type>::index_of(object, start);
+    }
+
+    void remove(int index) override {
+        LinkedList<type>::remove(index);
+    }
+};
 
 #endif //LINKEDLIST_LINKEDLIST_H
