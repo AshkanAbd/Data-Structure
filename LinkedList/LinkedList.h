@@ -88,6 +88,20 @@ public:
         return *((type *) last->get_data());
     }
 
+    int index_of(type object, int start = 0) {
+        Item *q = head;
+        int i = start;
+        for (;; i++) {
+            type t = *((type *) q->get_data());
+            if (t == object) {
+                return i;
+            }
+            if (q->get_link() == nullptr) break;
+            q = (Item *) q->get_link();
+        }
+        return -1;
+    }
+
     void remove(int index) {
         int i = 0;
         Item *last = nullptr, *current = head, *next;
