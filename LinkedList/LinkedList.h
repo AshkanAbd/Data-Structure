@@ -1,13 +1,10 @@
-//
-// Created by ashkan on 11/5/18.
-//
-
 #ifndef LINKEDLIST_LINKEDLIST_H
 #define LINKEDLIST_LINKEDLIST_H
 
 #include <bits/allocator.h>
 #include <cstring>
 #include <iostream>
+#include <algorithm>
 
 using namespace std;
 
@@ -63,11 +60,11 @@ public:
             memcpy(data, &item, sizeof(item));
             head->set_data(data);
         } else {
-            Item *last, *next;
+            Item *last, *next = nullptr;
             last = head;
             while (true) {
                 if (last->get_link() == nullptr) break;
-                last = (Item *) head->get_link();
+                last = (Item *) last->get_link();
             }
             next = new Item;
             void *data = malloc(sizeof(item));
@@ -100,6 +97,13 @@ public:
             q = (Item *) q->get_link();
         }
         return -1;
+    }
+
+    template<type N>
+    void add_all(const type (&arr_item)[N]) {
+        for (const auto &item: arr_item) {
+            add(item);
+        }
     }
 
     void remove(int index) {
