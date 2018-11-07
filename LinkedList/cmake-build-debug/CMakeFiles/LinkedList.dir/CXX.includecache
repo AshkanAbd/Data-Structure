@@ -1,0 +1,22 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/ashkan/CLionProjects/LinkedList/LinkedList.h
+bits/allocator.h
+-
+cstring
+-
+iostream
+-
+
+/home/ashkan/CLionProjects/LinkedList/main.cpp
+iostream
+-
+LinkedList.h
+/home/ashkan/CLionProjects/LinkedList/LinkedList.h
+
