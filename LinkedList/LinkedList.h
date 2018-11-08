@@ -8,30 +8,30 @@
 
 using namespace std;
 
-class Item {
+class Node {
 private:
     void *data;
     void *link;
     void *back_link;
 public:
-    Item() {
-        Item::data = nullptr;
-        Item::link = nullptr;
-        Item::back_link = nullptr;
+    Node() {
+        Node::data = nullptr;
+        Node::link = nullptr;
+        Node::back_link = nullptr;
     }
 
-    ~Item() = default;
+    ~Node() = default;
 
     void set_data(void *data) {
-        Item::data = data;
+        Node::data = data;
     }
 
     void set_back_link(void *back_link) {
-        Item::back_link = back_link;
+        Node::back_link = back_link;
     }
 
     void set_link(void *link) {
-        Item::link = link;
+        Node::link = link;
     }
 
     void *get_back_link() const {
@@ -39,44 +39,40 @@ public:
     }
 
     void *get_data() {
-        return Item::data;
+        return Node::data;
     }
 
     void *get_link() {
-        return Item::link;
+        return Node::link;
     }
 };
 
 
-template<typename type, typename _Alloc = std::allocator<type> >
+template<typename type, typename _Alloc = std::allocator<type>>
 class LinkedList {
 protected:
     int size;
-    Item *head;
+    Node *head;
 public:
     LinkedList() {
         LinkedList::size = 0;
         LinkedList::head = nullptr;
     }
 
-    virtual ~LinkedList() {
-        delete (LinkedList::head);
-    }
-
-    void add(type item) {
+    virtual void add(type item) {
         if (head == nullptr) {
-            head = new Item;
+            head = new Node;
             void *data = malloc(sizeof(item));
             memcpy(data, &item, sizeof(item));
             head->set_data(data);
         } else {
-            Item *last, *next = nullptr;
+            Node *last, *next = nullptr;
             last = head;
             while (true) {
                 if (last->get_link() == nullptr) break;
-                last = (Item *) last->get_link();
+                last = (Node *) last->get_link();
             }
-            next = new Item;
+            next = new Node;
             void *data = malloc(sizeof(item));
             memcpy(data, &item, sizeof(item));
             next->set_data(data);
@@ -87,16 +83,26 @@ public:
 
     virtual type get(int index) {
         int i = 0;
-        Item *last = head;
-        if (index + 1 > size) throw std::invalid_argument("Index out of bound exception");
+        Node *last = head;
+        if (index + 1 > size) throw std::invalid_argument("Index out of bounds exception");
         for (; i < index; ++i) {
-            last = (Item *) last->get_link();
+            last = (Node *) last->get_link();
         }
         return *((type *) last->get_data());
     }
 
+    virtual Node get_node(int index) {
+        int i = 0;
+        Node *last = head;
+        if (index + 1 > size) throw std::invalid_argument("Index out of bounds exception");
+        for (; i < index; ++i) {
+            last = (Node *) last->get_link();
+        }
+        return *last;
+    }
+
     virtual int index_of(type object, int start = 0) {
-        Item *q = head;
+        Node *q = head;
         int i = start;
         for (;; i++) {
             type t = *((type *) q->get_data());
@@ -104,7 +110,7 @@ public:
                 return i;
             }
             if (q->get_link() == nullptr) break;
-            q = (Item *) q->get_link();
+            q = (Node *) q->get_link();
         }
         return -1;
     }
@@ -118,24 +124,24 @@ public:
 
     virtual void to_arr(void *des) {
         type *t = ((type *) des);
-        Item *last = head;
+        Node *last = head;
         int i = 0;
         for (;; i++) {
             t[i] = *((type *) last->get_data());
             if (last->get_link() == nullptr) break;
-            last = (Item *) last->get_link();
+            last = (Node *) last->get_link();
         }
     }
 
     virtual void remove(int index) {
         int i = 0;
-        Item *last = nullptr, *current = head, *next;
-        if (index + 1 > size) throw std::invalid_argument("Index out of bound exception");
+        Node *last = nullptr, *current = head, *next;
+        if (index + 1 > size) throw std::invalid_argument("Index out of bounds exception");
         for (; i < index; ++i) { ;
             last = current;
-            current = (Item *) current->get_link();
+            current = (Node *) current->get_link();
         }
-        next = (Item *) current->get_link();
+        next = (Node *) current->get_link();
         if (last == nullptr) {
             head = next;
         } else {
@@ -147,10 +153,10 @@ public:
 
     virtual void insert(int index, type item) {
         int i = 0;
-        Item *current = head;
-        if (index + 1 > size) throw std::invalid_argument("Index out of bound exception");
+        Node *current = head;
+        if (index + 1 > size) throw std::invalid_argument("Index out of bounds exception");
         for (; i < index; ++i) {
-            current = (Item *) current->get_link();
+            current = (Node *) current->get_link();
         }
         void *data = malloc(sizeof(item));
         memcpy(data, &item, sizeof(item));
@@ -162,16 +168,9 @@ public:
     }
 };
 
-template<typename type, typename _Alloc = std::allocator<type> >
+template<typename type, typename _Alloc = std::allocator<type>>
 class Stack : public LinkedList<type> {
 public:
-    Stack() : LinkedList<type>() {
-
-    }
-
-    ~Stack() override {
-        delete (Stack<type>::head);
-    }
 
     type pop() {
         type t = Stack<type>::get(Stack<type>::get_size() - 1);
@@ -184,6 +183,10 @@ public:
     }
 
 private:
+    Node get_node(int index) override {
+        return LinkedList<type>::get_node(index);
+    }
+
     type get(int index) override {
         return LinkedList<type>::get(index);
     }
@@ -201,17 +204,9 @@ private:
     }
 };
 
-template<typename type, typename _Alloc = std::allocator<type> >
+template<typename type, typename _Alloc = std::allocator<type>>
 class Queue : public LinkedList<type> {
 public:
-    Queue() : LinkedList<type>() {
-
-    }
-
-    ~Queue() override {
-        delete (Queue<type>::head);
-    }
-
     type pop() {
         type t = LinkedList<type>::get(0);
         LinkedList<type>::remove(0);
@@ -223,6 +218,10 @@ public:
     }
 
 private:
+    Node get_node(int index) override {
+        return LinkedList<type>::get_node(index);
+    }
+
     type get(int index) override {
         return LinkedList<type>::get(index);
     }
@@ -240,6 +239,97 @@ private:
     }
 };
 
+template<typename type, typename _Alloc=std::allocator<type>>
+class CircleLinkedList : public LinkedList<type> {
+public:
+    void add(type item) override {
+        if (LinkedList<type>::head == nullptr) {
+            LinkedList<type>::head = new Node;
+            void *data = malloc(sizeof(item));
+            memcpy(data, &item, sizeof(item));
+            LinkedList<type>::head->set_data(data);
+            LinkedList<type>::head->set_link(LinkedList<type>::head);
+        } else {
+            Node *last, *next = nullptr;
+            last = LinkedList<type>::head;
+            while (true) {
+                if (last->get_link() == LinkedList<type>::head) break;
+                last = (Node *) last->get_link();
+            }
+            next = new Node;
+            void *data = malloc(sizeof(item));
+            memcpy(data, &item, sizeof(item));
+            next->set_data(data);
+            last->set_link(next);
+            next->set_link(LinkedList<type>::head);
+        }
+        LinkedList<type>::size++;
+    }
+
+    int index_of(type object, int start = 0) override {
+        Node *q = LinkedList<type>::head;
+        int i = start;
+        for (;; i++) {
+            type t = *((type *) q->get_data());
+            if (t == object) {
+                return i;
+            }
+            if (q->get_link() == LinkedList<type>::head) break;
+            q = (Node *) q->get_link();
+        }
+        return -1;
+    }
+
+    void to_arr(void *des) override {
+        type *t = ((type *) des);
+        Node *last = LinkedList<type>::head;
+        int i = 0;
+        for (;; i++) {
+            t[i] = *((type *) last->get_data());
+            if (last->get_link() == LinkedList<type>::head) break;
+            last = (Node *) last->get_link();
+        }
+    }
+};
+
+template<typename type, typename _Alloc = std::allocator<type> >
+class DoublyLinkedList : public LinkedList<type> {
+public:
+    void add(type item) override {
+        if (LinkedList<type>::head == nullptr) {
+            LinkedList<type>::head = new Node;
+            void *data = malloc(sizeof(item));
+            memcpy(data, &item, sizeof(item));
+            LinkedList<type>::head->set_data(data);
+        } else {
+            Node *last, *next = nullptr;
+            last = LinkedList<type>::head;
+            while (true) {
+                if (last->get_link() == nullptr) break;
+                last = (Node *) last->get_link();
+            }
+            next = new Node;
+            void *data = malloc(sizeof(item));
+            memcpy(data, &item, sizeof(item));
+            next->set_data(data);
+            next->set_back_link(last);
+            last->set_link(next);
+        }
+        LinkedList<type>::size++;
+    }
+
+    type get(int index) override {
+        int i = 0;
+        Node *last = LinkedList<type>::head;
+        if (index + 1 > LinkedList<type>::size) throw std::invalid_argument("Index out of bounds exception");
+
+        for (; i < index; ++i) {
+            last = (Node *) last->get_link();
+        }
+        return *((type *) last->get_data());
+
+    }
+};
 
 
 #endif //LINKEDLIST_LINKEDLIST_H
