@@ -19,7 +19,6 @@ void bubble_sort(int *src, int *dest, int size) {
 
 void merge_sort(int *src, int *dest, int size) {
     memcpy(dest, src, sizeof(int) * size);
-    
 }
 
 #endif //LINKEDLIST_ALGORITHMS_H
