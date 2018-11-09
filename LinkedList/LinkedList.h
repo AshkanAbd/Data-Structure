@@ -20,7 +20,7 @@ public:
         Node::back_link = nullptr;
     }
 
-    ~Node() = default;
+    ~Node() = default;;
 
     void set_data(void *data) {
         Node::data = data;
