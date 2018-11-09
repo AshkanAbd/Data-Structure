@@ -144,7 +144,7 @@ public:
         next = (Node *) current->get_link();
         if (last == nullptr) {
             head = next;
-        } else {
+        } else if (next != nullptr) {
             last->set_link(next);
         }
         delete (current);
@@ -290,6 +290,30 @@ public:
             last = (Node *) last->get_link();
         }
     }
+
+    void remove(int index) override {
+        int i = 0;
+        Node *last = nullptr, *current = LinkedList<type>::head, *next;
+        if (index + 1 > LinkedList<type>::size) throw std::invalid_argument("Index out of bounds exception");
+        for (; i < index; ++i) { ;
+            last = current;
+            current = (Node *) current->get_link();
+        }
+        next = (Node *) current->get_link();
+        if (last == nullptr) {
+            LinkedList<type>::head = next;
+            Node *last1 = LinkedList<type>::head;
+            while (true) {
+                if (last1->get_link() == current) break;
+                last1 = (Node *) last1->get_link();
+            }
+            last1->set_link(LinkedList<type>::head);
+        } else if (next != nullptr) {
+            last->set_link(next);
+        }
+        delete (current);
+        LinkedList<type>::size--;
+    }
 };
 
 template<typename type, typename _Alloc = std::allocator<type> >
@@ -322,12 +346,30 @@ public:
         int i = 0;
         Node *last = LinkedList<type>::head;
         if (index + 1 > LinkedList<type>::size) throw std::invalid_argument("Index out of bounds exception");
-
         for (; i < index; ++i) {
             last = (Node *) last->get_link();
         }
         return *((type *) last->get_data());
+    }
 
+    void remove(int index) override {
+        int i = 0;
+        Node *last = nullptr, *current = LinkedList<type>::head, *next;
+        if (index + 1 > LinkedList<type>::size) throw std::invalid_argument("Index out of bounds exception");
+        for (; i < index; ++i) { ;
+            last = current;
+            current = (Node *) current->get_link();
+        }
+        next = (Node *) current->get_link();
+        if (last == nullptr) {
+            LinkedList<type>::head = next;
+            next->set_back_link(nullptr);
+        } else if (next != nullptr) {
+            last->set_link(next);
+            next->set_back_link(last);
+        }
+        delete (current);
+        LinkedList<type>::size--;
     }
 };
 
