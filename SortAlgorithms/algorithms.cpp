@@ -75,7 +75,7 @@ namespace sort {
     }
 
     void bubble_sort(int *src, int *dst, int size) {
-        memcpy(dst, src, sizeof(int) * size);
+        copy(src, src + size, dst);
         for (int i = 0; i < size; ++i) {
             for (int j = 0; j < size - 1; ++j) {
                 if ((*(dst + j)) > (*(dst + (j + 1)))) {
@@ -86,12 +86,41 @@ namespace sort {
     }
 
     void merge_sort(int *src, int *dst, int size) {
-        memcpy(dst, src, sizeof(int) * size);
+        copy(src, src + size, dst);
         merge_sort(dst, 0, size - 1);
     }
 
     void quick_sort(int *src, int *dst, int size) {
-        memcpy(dst, src, sizeof(int) * size);
+        copy(src, src + size, dst);
         quick_sort(dst, 0, size - 1);
+    }
+
+    void insertion_sort(int *src, int *dst, int size) {
+        copy(src, src + size, dst);
+        for (int i = 0; i < size; ++i) {
+            int k = i;
+            int temp = *(dst + i);
+            for (int j = i - 1; j >= 0; j--) {
+                if (*(dst + j) > *(dst + i)) {
+                    k--;
+                } else {
+                    break;
+                }
+            }
+            copy(dst + k, dst + i, dst + k + 1);
+            *(dst + k) = temp;
+        }
+    }
+
+    void selection_sort(int *src, int *dst, int size) {
+        copy(src, src + size, dst);
+        for (int i = 0; i < size; ++i) {
+            int min = i;
+            for (int j = i; j < size; ++j) {
+                if (*(dst + j) < *(dst + min))
+                    min = j;
+            }
+            swap(*(dst + min), *(dst + i));
+        }
     }
 }

@@ -12,5 +12,9 @@ namespace sort {
     void merge_sort(int *src, int *dst, int size);
 
     void quick_sort(int *src, int *dst, int size);
+
+    void insertion_sort(int *src, int *dst, int size);
+
+    void selection_sort(int *src, int *dst, int size);
 }
 #endif //LINKEDLIST_ALGORITHMS_H

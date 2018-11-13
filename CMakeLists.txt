@@ -4,5 +4,7 @@ project(Data-Structure)
 set(CMAKE_CXX_STANDARD 11)
 
 
-add_subdirectory(Sort-Algorithms)
 add_subdirectory(LinkedList)
+add_subdirectory(SortAlgorithms)
+
+add_executable(Data-Structure main.cpp)
