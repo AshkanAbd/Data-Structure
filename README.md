@@ -11,6 +11,6 @@ now `Sort-Algorithms` and `LinkedList` binary file should found in `cmake` dir
 jdk8 or higher ir required     
 `cd java`   
 `mkdir out`     
-`javac src/*.java src/*/*.java -d out`          
+`javac $(find src/ -name "*.java") -d out/`
 `cd out`         
 `java Main`       
