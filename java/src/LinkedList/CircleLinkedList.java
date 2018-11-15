@@ -2,40 +2,27 @@ package LinkedList;
 
 import java.util.*;
 
-public class LinkedList<Type> {
-    protected Node<Type> head;
-    protected int size;
+public class CircleLinkedList<Type> extends LinkedList<Type> {
 
-    public LinkedList() {
-        this.head = null;
-        size = 0;
-    }
-
+    @Override
     public void add(Type item) {
         if (head == null) {
             head = new Node<>(item);
+            head.setNext(head);
         } else {
             Node<Type> last = head;
-            while (last.getNext() != null) {
+            while (last.getNext() != head) {
                 last = last.getNext();
             }
             Node<Type> current = new Node<>(item);
             last.setNext(current);
+            current.setNext(head);
         }
         size++;
     }
 
-    public Node<Type> getNode(int index) {
-        if (index + 1 > size) throw new IndexOutOfBoundsException();
-        Node<Type> last = head;
-        for (int i = 0; i < index; i++) {
-            last = last.getNext();
-        }
-        return last;
-    }
-
+    @Override
     public Type get(int index) {
-        if (index + 1 > size) throw new IndexOutOfBoundsException();
         Node<Type> last = head;
         for (int i = 0; i < index; i++) {
             last = last.getNext();
@@ -43,36 +30,17 @@ public class LinkedList<Type> {
         return last.getData();
     }
 
-    public int IndexOf(Type item) {
-        Node<Type> current = head;
-        for (int i = 0; i < size; i++) {
-            if (current.getData().equals(item)) return i;
-            current = current.getNext();
+    @Override
+    public Node<Type> getNode(int index) {
+        Node<Type> last = head;
+        for (int i = 0; i < index; i++) {
+            last = last.getNext();
         }
-        return -1;
+        return last;
     }
 
-    public boolean contains(Type item) {
-        Node<Type> node = head;
-        for (int i = 0; i < size; i++) {
-            if (node.getData().equals(item))
-                return true;
-            node = node.getNext();
-        }
-        return false;
-    }
-
-    public int IndexOf(Type item, int start) {
-        Node<Type> current = head;
-        for (int i = start; i < size; i++) {
-            if (current.getData().equals(item)) return i;
-            current = current.getNext();
-        }
-        return -1;
-    }
-
+    @Override
     public void remove(int index) {
-        if (index + 1 > size) throw new IndexOutOfBoundsException();
         Node<Type> current = head;
         Node<Type> last = null;
         Node<Type> next;
@@ -82,6 +50,7 @@ public class LinkedList<Type> {
         }
         next = current.getNext();
         if (last == null) {
+            this.getNode(size - 1).setNext(next);
             head = next;
         } else {
             last.setNext(next);
@@ -89,29 +58,17 @@ public class LinkedList<Type> {
         size--;
     }
 
-    public void addAll(Type[] items) {
-        for (Type item : items)
-            this.add(item);
-    }
-
+    @Override
     public List<Type> toList() {
         List<Type> list = new ArrayList<>();
         if (head == null) return list;
         Node<Type> last = head;
         list.add(last.getData());
-        while (last.getNext() != null) {
+        while (last.getNext() != head) {
             last = last.getNext();
             list.add(last.getData());
         }
         return list;
-    }
-
-    public Type[] toArray() {
-        return (Type[]) toList().toArray();
-    }
-
-    public int getSize() {
-        return size;
     }
 
     @Override
@@ -120,7 +77,7 @@ public class LinkedList<Type> {
         if (head != null) {
             Node<Type> node = head;
             builder.append(node.getData());
-            while (node.getNext() != null) {
+            while (node.getNext() != head) {
                 node = node.getNext();
                 builder.append(", ");
                 builder.append(node.getData());
