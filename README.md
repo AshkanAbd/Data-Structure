@@ -7,7 +7,7 @@ CMake `3.4` or higher is required.
 `cd cmake`      
 `cmake ..`    
 `make`   
-now `Sort-Algorithms` and `LinkedList` binary file should found in `cmake` dir
+now `Data-Structure` binary file should found in `cmake` dir
 # JAVA
 jdk8 or higher ir required     
 `cd java`   
