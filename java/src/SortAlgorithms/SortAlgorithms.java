@@ -28,14 +28,65 @@ public class SortAlgorithms {
 
     public static int[] quickSort(int[] array) {
         int size = array.length;
-        int[]dst = new int[size];
-        System.arraycopy(array,0,dst,0,size);
-
+        int[] dst = new int[size];
+        System.arraycopy(array, 0, dst, 0, size);
+        quickSort(dst, 0, size - 1);
         return dst;
     }
 
-    private static void quickSort(){
-        
+    public static int[] insertionSort(int[] array) {
+        int size = array.length;
+        int[] dst = new int[size];
+        System.arraycopy(array, 0, dst, 0, size);
+        for (int i = 1; i < size; i++) {
+            int k = i;
+            int temp = dst[k];
+            for (int j = i - 1; j >= 0; j--) {
+                if (dst[i] < dst[j]) {
+                    k--;
+                } else {
+                    break;
+                }
+            }
+            if (k != i) {
+                System.arraycopy(dst, k, dst, k + 1, i - k);
+                dst[k] = temp;
+            }
+        }
+        return dst;
+    }
+
+    public static int[] selectionSort(int[] array) {
+        int size = array.length;
+        int[] dst = new int[size];
+        System.arraycopy(array, 0, dst, 0, size);
+        for (int i = size - 1; i >= 0; i--) {
+            int max = i;
+            for (int j = i - 1; j >= 0; j--) {
+                if (dst[j] > dst[max]) {
+                    max = j;
+                }
+            }
+            if (max != i) {
+                swap(dst, max, i);
+            }
+        }
+        return dst;
+    }
+
+    private static void quickSort(int[] array, int start, int end) {
+        if (start >= end) return;
+        int p = start, temp;
+        for (int i = start + 1; i <= end; i++) {
+            if (array[p] > array[i]) {
+                temp = array[i];
+                System.arraycopy(array, start, array, start + 1, i - start);
+                p++;
+                array[start] = temp;
+            }
+        }
+        quickSort(array, start, p - 1);
+        quickSort(array, p + 1, end);
     }
 
     private static void mergeSort(int[] array, int start, int end) {
