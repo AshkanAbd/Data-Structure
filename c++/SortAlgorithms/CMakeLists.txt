@@ -3,4 +3,6 @@ project(SortAlgorithms)
 
 set(CMAKE_CXX_STANDARD 11)
 
-add_executable(SortAlgorithms main.cpp algorithms.cpp algorithms.h)
+set(Files algorithms.cpp algorithms.h)
+
+add_library(SortAlgorithms ${Files})

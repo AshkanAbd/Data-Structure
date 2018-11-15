@@ -14,37 +14,21 @@ private:
     void *link;
     void *back_link;
 public:
-    Node() {
-        Node::data = nullptr;
-        Node::link = nullptr;
-        Node::back_link = nullptr;
-    }
+    Node();
 
     ~Node() = default;;
 
-    void set_data(void *data) {
-        Node::data = data;
-    }
+    void set_data(void *data);
 
-    void set_back_link(void *back_link) {
-        Node::back_link = back_link;
-    }
+    void set_back_link(void *back_link);
 
-    void set_link(void *link) {
-        Node::link = link;
-    }
+    void set_link(void *link);
 
-    void *get_back_link() const {
-        return back_link;
-    }
+    void *get_back_link();
 
-    void *get_data() {
-        return Node::data;
-    }
+    void *get_data();
 
-    void *get_link() {
-        return Node::link;
-    }
+    void *get_link();
 };
 
 
@@ -59,7 +43,7 @@ public:
         LinkedList::head = nullptr;
     }
 
-    virtual void add(type item) {
+    void add(type item) {
         if (head == nullptr) {
             head = new Node;
             void *data = malloc(sizeof(item));
@@ -81,7 +65,7 @@ public:
         size++;
     }
 
-    virtual type get(int index) {
+    type get(int index) {
         int i = 0;
         Node *last = head;
         if (index + 1 > size) throw std::invalid_argument("Index out of bounds exception");
@@ -91,7 +75,7 @@ public:
         return *((type *) last->get_data());
     }
 
-    virtual Node get_node(int index) {
+    Node get_node(int index) {
         int i = 0;
         Node *last = head;
         if (index + 1 > size) throw std::invalid_argument("Index out of bounds exception");
@@ -101,7 +85,7 @@ public:
         return *last;
     }
 
-    virtual int index_of(type object, int start = 0) {
+    int index_of(type object, int start) {
         Node *q = head;
         int i = start;
         for (;; i++) {
@@ -122,7 +106,7 @@ public:
         }
     }
 
-    virtual void to_arr(void *des) {
+    void to_arr(void *des) {
         type *t = ((type *) des);
         Node *last = head;
         int i = 0;
@@ -133,7 +117,7 @@ public:
         }
     }
 
-    virtual void remove(int index) {
+    void remove(int index) {
         int i = 0;
         Node *last = nullptr, *current = head, *next;
         if (index + 1 > size) throw std::invalid_argument("Index out of bounds exception");
@@ -151,7 +135,7 @@ public:
         size--;
     }
 
-    virtual void insert(int index, type item) {
+    void insert(int index, type item) {
         int i = 0;
         Node *current = head;
         if (index + 1 > size) throw std::invalid_argument("Index out of bounds exception");
