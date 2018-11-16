@@ -43,7 +43,7 @@ public:
         LinkedList::head = nullptr;
     }
 
-    void add(type item) {
+    virtual void add(type item) {
         if (head == nullptr) {
             head = new Node;
             void *data = malloc(sizeof(item));
@@ -65,7 +65,7 @@ public:
         size++;
     }
 
-    type get(int index) {
+    virtual type get(int index) {
         int i = 0;
         Node *last = head;
         if (index + 1 > size) throw std::invalid_argument("Index out of bounds exception");
@@ -75,7 +75,7 @@ public:
         return *((type *) last->get_data());
     }
 
-    Node get_node(int index) {
+    virtual Node get_node(int index) {
         int i = 0;
         Node *last = head;
         if (index + 1 > size) throw std::invalid_argument("Index out of bounds exception");
@@ -85,7 +85,7 @@ public:
         return *last;
     }
 
-    int index_of(type object, int start) {
+    virtual int index_of(type object, int start) {
         Node *q = head;
         int i = start;
         for (;; i++) {
@@ -106,7 +106,7 @@ public:
         }
     }
 
-    void to_arr(void *des) {
+    virtual void to_arr(void *des) {
         type *t = ((type *) des);
         Node *last = head;
         int i = 0;
@@ -117,7 +117,7 @@ public:
         }
     }
 
-    void remove(int index) {
+    virtual void remove(int index) {
         int i = 0;
         Node *last = nullptr, *current = head, *next;
         if (index + 1 > size) throw std::invalid_argument("Index out of bounds exception");
@@ -129,13 +129,16 @@ public:
         if (last == nullptr) {
             head = next;
         } else if (next != nullptr) {
+            if (current == head) {
+                head = (Node *) head->get_link();
+            }
             last->set_link(next);
         }
         delete (current);
         size--;
     }
 
-    void insert(int index, type item) {
+    virtual void insert(int index, type item) {
         int i = 0;
         Node *current = head;
         if (index + 1 > size) throw std::invalid_argument("Index out of bounds exception");
@@ -293,6 +296,9 @@ public:
             }
             last1->set_link(LinkedList<type>::head);
         } else if (next != nullptr) {
+            if (current == LinkedList<type>::head) {
+                LinkedList<type>::head = (Node *) LinkedList<type>::head->get_link();
+            }
             last->set_link(next);
         }
         delete (current);
@@ -349,6 +355,9 @@ public:
             LinkedList<type>::head = next;
             next->set_back_link(nullptr);
         } else if (next != nullptr) {
+            if (current == LinkedList<type>::head) {
+                LinkedList<type>::head = (Node *) LinkedList<type>::head->get_link();
+            }
             last->set_link(next);
             next->set_back_link(last);
         }
