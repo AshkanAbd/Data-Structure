@@ -32,6 +32,9 @@ public class DoublyLinkedList<Type> extends LinkedList<Type> {
             head = next;
             head.setBack(null);
         } else {
+            if (current == head) {
+                head = head.getNext();
+            }
             last.setNext(next);
             if (next != null)
                 next.setBack(last);

@@ -99,6 +99,9 @@ public class LinkedList<Type> {
         if (last == null) {
             head = next;
         } else {
+            if (current == head) {
+                head = head.getNext();
+            }
             last.setNext(next);
         }
         current.setNext(null);

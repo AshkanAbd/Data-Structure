@@ -69,6 +69,9 @@ public class CircleLinkedList<Type> extends LinkedList<Type> {
             this.getNode(size - 1).setNext(next);
             head = next;
         } else {
+            if (current == head) {
+                head = head.getNext();
+            }
             last.setNext(next);
         }
         current.setNext(null);
