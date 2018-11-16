@@ -9,7 +9,7 @@ public class Stack<Type> {
         size = 0;
     }
 
-    public void add(Type item) {
+    public void push(Type item) {
         if (head == null) {
             head = new Node<>(item);
         } else {
@@ -32,7 +32,7 @@ public class Stack<Type> {
         return current.getData();
     }
 
-    public Type poll() {
+    public Type pop() {
         if (head == null) return null;
         Node<Type> last = null;
         Node<Type> current = head;
@@ -43,12 +43,39 @@ public class Stack<Type> {
         size--;
         if (last == null) {
             Type t = head.getData();
+            head.setData(null);
             head = null;
             return t;
         } else {
             last.setNext(null);
-            return current.getData();
+            Type t = current.getData();
+            current.setData(null);
+            return t;
         }
+    }
+
+    public int search(Type item, int start) {
+        Node<Type> current = head;
+        for (int i = start; i < size; i++) {
+            if (current.getData().equals(item)) return i;
+            current = current.getNext();
+        }
+        return -1;
+    }
+
+    public void clear() {
+        if (head == null) return;
+        Node<Type> last = head, current;
+        while (last.getNext() != null) {
+            current = last;
+            last = last.getNext();
+            current.setData(null);
+            current.setNext(null);
+        }
+        head = null;
+        last.setNext(null);
+        last.setData(null);
+        size = 0;
     }
 
     public int getSize() {

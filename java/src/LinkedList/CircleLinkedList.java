@@ -22,6 +22,22 @@ public class CircleLinkedList<Type> extends LinkedList<Type> {
     }
 
     @Override
+    public void clear() {
+        if (head == null) return;
+        Node<Type> last = head, current;
+        while (last.getNext() != head) {
+            current = last;
+            last = last.getNext();
+            current.setData(null);
+            current.setNext(null);
+        }
+        last.setNext(null);
+        last.setData(null);
+        head = null;
+        size = 0;
+    }
+
+    @Override
     public Type get(int index) {
         Node<Type> last = head;
         for (int i = 0; i < index; i++) {
@@ -55,6 +71,8 @@ public class CircleLinkedList<Type> extends LinkedList<Type> {
         } else {
             last.setNext(next);
         }
+        current.setNext(null);
+        current.setData(null);
         size--;
     }
 

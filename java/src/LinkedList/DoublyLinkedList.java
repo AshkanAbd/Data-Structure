@@ -36,6 +36,27 @@ public class DoublyLinkedList<Type> extends LinkedList<Type> {
             if (next != null)
                 next.setBack(last);
         }
+        current.setBack(null);
+        current.setNext(null);
+        current.setData(null);
         size--;
+    }
+
+    @Override
+    public void clear() {
+        if (head == null) return;
+        Node<Type> last = head, current;
+        while (last.getNext() != null) {
+            current = last;
+            last = last.getNext();
+            current.setData(null);
+            current.setNext(null);
+            current.setBack(null);
+        }
+        last.setData(null);
+        last.setNext(null);
+        last.setBack(null);
+        head = null;
+        size = 0;
     }
 }

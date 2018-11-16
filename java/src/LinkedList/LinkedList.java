@@ -52,6 +52,21 @@ public class LinkedList<Type> {
         return -1;
     }
 
+    public void clear() {
+        if (head == null) return;
+        Node<Type> last = head, current;
+        while (last.getNext() != null) {
+            current = last;
+            last = last.getNext();
+            current.setData(null);
+            current.setNext(null);
+        }
+        head = null;
+        last.setNext(null);
+        last.setData(null);
+        size = 0;
+    }
+
     public boolean contains(Type item) {
         Node<Type> node = head;
         for (int i = 0; i < size; i++) {
@@ -86,6 +101,8 @@ public class LinkedList<Type> {
         } else {
             last.setNext(next);
         }
+        current.setNext(null);
+        current.setData(null);
         size--;
     }
 

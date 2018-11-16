@@ -1,8 +1,13 @@
 package SortAlgorithms;
 
 public class SortAlgorithms {
+    private int[] array;
 
-    public static int[] bubbleSort(int[] array) {
+    public SortAlgorithms(int[] array) {
+        this.array = array;
+    }
+
+    public int[] bubbleSort() {
         int[] dst = new int[array.length];
         int size = array.length;
         System.arraycopy(array, 0, dst, 0, array.length);
@@ -16,7 +21,7 @@ public class SortAlgorithms {
         return dst;
     }
 
-    public static int[] mergeSort(int[] array) {
+    public int[] mergeSort() {
         int size = array.length;
         int[] dst = new int[size];
         System.arraycopy(array, 0, dst, 0, size);
@@ -24,7 +29,7 @@ public class SortAlgorithms {
         return dst;
     }
 
-    public static int[] quickSort(int[] array) {
+    public int[] quickSort() {
         int size = array.length;
         int[] dst = new int[size];
         System.arraycopy(array, 0, dst, 0, size);
@@ -32,7 +37,7 @@ public class SortAlgorithms {
         return dst;
     }
 
-    public static int[] insertionSort(int[] array) {
+    public int[] insertionSort() {
         int size = array.length;
         int[] dst = new int[size];
         System.arraycopy(array, 0, dst, 0, size);
@@ -54,7 +59,7 @@ public class SortAlgorithms {
         return dst;
     }
 
-    public static int[] selectionSort(int[] array) {
+    public int[] selectionSort() {
         int size = array.length;
         int[] dst = new int[size];
         System.arraycopy(array, 0, dst, 0, size);
@@ -72,7 +77,7 @@ public class SortAlgorithms {
         return dst;
     }
 
-    private static void quickSort(int[] array, int start, int end) {
+    private void quickSort(int[] array, int start, int end) {
         if (start >= end) return;
         int p = start, temp;
         for (int i = start + 1; i <= end; i++) {
@@ -87,7 +92,7 @@ public class SortAlgorithms {
         quickSort(array, p + 1, end);
     }
 
-    private static void mergeSort(int[] array, int start, int end) {
+    private void mergeSort(int[] array, int start, int end) {
         if (start >= end) return;
         int mid = (start + end) / 2;
         mergeSort(array, start, mid);
@@ -95,7 +100,7 @@ public class SortAlgorithms {
         merge(array, start, mid, end);
     }
 
-    private static void merge(int[] array, int start, int mid, int end) {
+    private void merge(int[] array, int start, int mid, int end) {
         int a[] = new int[mid - start + 1];
         int b[] = new int[end - mid];
         System.arraycopy(array, start, a, 0, mid - start + 1);
@@ -118,10 +123,18 @@ public class SortAlgorithms {
         }
     }
 
-    private static void swap(int[] arr, int a, int b) {
+    private void swap(int[] arr, int a, int b) {
         int c = arr[a];
         arr[a] = arr[b];
         arr[b] = c;
+
     }
 
+    public int[] getArray() {
+        return array;
+    }
+
+    public void setArray(int[] array) {
+        this.array = array;
+    }
 }
