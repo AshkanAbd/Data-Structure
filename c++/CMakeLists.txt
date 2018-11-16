@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD 11)
 include_directories(SortAlgorithms)
 include_directories(LinkedList)
 
-link_directories(SortAlgorithms)    
+link_directories(SortAlgorithms)
 link_directories(LinkedList)
 
 add_subdirectory(SortAlgorithms)
