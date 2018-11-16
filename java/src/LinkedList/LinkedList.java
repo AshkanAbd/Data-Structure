@@ -109,6 +109,32 @@ public class LinkedList<Type> {
         size--;
     }
 
+    public void insert(int index, Type item) {
+        if (index + 1 > size) throw new IndexOutOfBoundsException();
+        if (index == 0) {
+            head = new Node<Type>(item, head);
+        } else {
+            Node<Type> current = head;
+            for (int i = 0; i < index - 1; i++) {
+                current = current.getNext();
+            }
+            Node<Type> node = new Node<>(item);
+            Node<Type> next = current.getNext();
+            current.setNext(node);
+            node.setNext(next);
+        }
+        size++;
+    }
+
+    public void replace(int index, Type item) {
+        if (index + 1 > size) throw new IndexOutOfBoundsException();
+        Node<Type> current = head;
+        for (int i = 0; i < index; i++) {
+            current = current.getNext();
+        }
+        current.setData(item);
+    }
+
     public void addAll(Type[] items) {
         for (Type item : items)
             this.add(item);

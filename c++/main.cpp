@@ -5,17 +5,18 @@
 using namespace std;
 
 int main() {
-    LinkedList<int> linkedList;
-    cout << "Enter 5 numbers : " << endl;
-    for (int i = 0; i < 5; ++i) {
-        int a;
-        cin >> a;
-        linkedList.add(a);
+    DoublyLinkedList<int> linkedList;
+    linkedList.add(0);
+    linkedList.add(1);
+    linkedList.add(2);
+    linkedList.add(3);
+    for (int i = 0; i < linkedList.get_size(); ++i) {
+        cout << linkedList.get(i) << " ";
     }
-    int arr[5];
-    linkedList.to_arr(arr);
-    sort::quick_sort(arr, arr, 5);
+    cout << endl;
+    linkedList.insert(0, 4);
     for (int i = 0; i < 5; ++i) {
-        cout << *(arr + i) << " ";
+        cout << linkedList.get(i) << " ";
     }
+    cout << endl;
 }

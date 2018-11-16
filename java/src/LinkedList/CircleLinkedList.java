@@ -93,6 +93,37 @@ public class CircleLinkedList<Type> extends LinkedList<Type> {
     }
 
     @Override
+    public void insert(int index, Type item) {
+        if (index % size == 0) {
+            Node<Type> current = head;
+            while (current.getNext() != head) {
+                current = current.getNext();
+            }
+            head = new Node<Type>(item, head);
+            current.setNext(head);
+        } else {
+            Node<Type> current = head;
+            for (int i = 0; i < index - 1; i++) {
+                current = current.getNext();
+            }
+            Node<Type> node = new Node<>(item);
+            Node<Type> next = current.getNext();
+            current.setNext(node);
+            node.setNext(next);
+        }
+        size++;
+    }
+
+    @Override
+    public void replace(int index, Type item) {
+        Node<Type> current = head;
+        for (int i = 0; i < index; i++) {
+            current = current.getNext();
+        }
+        current.setData(item);
+    }
+
+    @Override
     public String toString() {
         StringBuilder builder = new StringBuilder("[");
         if (head != null) {

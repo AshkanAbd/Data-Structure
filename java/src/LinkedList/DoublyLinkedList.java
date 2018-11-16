@@ -46,6 +46,28 @@ public class DoublyLinkedList<Type> extends LinkedList<Type> {
     }
 
     @Override
+    public void insert(int index, Type item) {
+        if (index + 1 > size) throw new IndexOutOfBoundsException();
+        Node<Type> node = new Node<Type>(item);
+        if (index == 0) {
+            Node<Type> next = head.getNext();
+            node.setNext(head);
+            head = node;
+            next.setBack(node);
+        } else {
+            Node<Type> current = head;
+            for (int i = 0; i < index - 1; i++) {
+                current = current.getNext();
+            }
+            Node<Type> next = current.getNext();
+            current.setNext(node);
+            node.setNext(next);
+            next.setBack(node);
+        }
+        size++;
+    }
+
+    @Override
     public void clear() {
         if (head == null) return;
         Node<Type> last = head, current;

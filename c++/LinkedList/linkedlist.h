@@ -138,7 +138,7 @@ public:
         size--;
     }
 
-    virtual void insert(int index, type item) {
+    virtual void replace(int index, type item) {
         int i = 0;
         Node *current = head;
         if (index + 1 > size) throw std::invalid_argument("Index out of bounds exception");
@@ -148,6 +148,28 @@ public:
         void *data = malloc(sizeof(item));
         memcpy(data, &item, sizeof(item));
         current->set_data(data);
+    }
+
+    virtual void insert(int index, type item) {
+        if (index + 1 > size) throw std::invalid_argument("Index out of bounds exception");
+        Node *node = new Node;
+        void *data = malloc(sizeof(item));
+        memcpy(data, &item, sizeof(item));
+        node->set_data(data);
+        if (index == 0) {
+            node->set_link(head);
+            head = node;
+
+        } else {
+            Node *current = head;
+            for (int i = 0; i < index - 1; ++i) {
+                current = (Node *) current->get_link();
+            }
+            Node *next = (Node *) current->get_link();
+            current->set_link(node);
+            node->set_link(next);
+        }
+        size++;
     }
 
     int get_size() {
@@ -186,8 +208,12 @@ private:
         LinkedList<type>::remove(index);
     }
 
+    void replace(int index, type item) override {
+        LinkedList<type>::replace(index, item);
+    }
+
     void insert(int index, type item) override {
-        LinkedList<type>::insert(index, item);
+        LinkedList<type>::replace(index, item);
     }
 };
 
@@ -221,8 +247,12 @@ private:
         LinkedList<type>::remove(index);
     }
 
+    void replace(int index, type item) override {
+        LinkedList<type>::replace(index, item);
+    }
+
     void insert(int index, type item) override {
-        LinkedList<type>::insert(index, item);
+        LinkedList<type>::replace(index, item);
     }
 };
 
@@ -281,7 +311,6 @@ public:
     void remove(int index) override {
         int i = 0;
         Node *last = nullptr, *current = LinkedList<type>::head, *next;
-        if (index + 1 > LinkedList<type>::size) throw std::invalid_argument("Index out of bounds exception");
         for (; i < index; ++i) { ;
             last = current;
             current = (Node *) current->get_link();
@@ -303,6 +332,61 @@ public:
         }
         delete (current);
         LinkedList<type>::size--;
+    }
+
+    void insert(int index, type item) {
+        Node *node = new Node;
+        void *data = malloc(sizeof(item));
+        memcpy(data, &item, sizeof(item));
+        node->set_data(data);
+        if (index == 0) {
+            Node *current = LinkedList<type>::head;
+            while (current->get_link() != LinkedList<type>::head) {
+                current = (Node *) current->get_link();
+            }
+            node->set_link(LinkedList<type>::head);
+            LinkedList<type>::head = node;
+            current->set_link(LinkedList<type>::head);
+        } else {
+            Node *current = LinkedList<type>::head;
+            for (int i = 0; i < index - 1; ++i) {
+                current = (Node *) current->get_link();
+            }
+            Node *next = (Node *) current->get_link();
+            current->set_link(node);
+            node->set_link(next);
+        }
+        LinkedList<type>::size++;
+    }
+
+    virtual type get(int index) {
+        int i = 0;
+        Node *last = LinkedList<type>::head;
+        for (; i < index; ++i) {
+            last = (Node *) last->get_link();
+        }
+        return *((type *) last->get_data());
+    }
+
+    virtual Node get_node(int index) {
+        int i = 0;
+        Node *last = LinkedList<type>::head;
+        for (; i < index; ++i) {
+            last = (Node *) last->get_link();
+        }
+        return *last;
+    }
+
+
+    virtual void replace(int index, type item) {
+        int i = 0;
+        Node *current = LinkedList<type>::head;
+        for (; i < index; ++i) {
+            current = (Node *) current->get_link();
+        }
+        void *data = malloc(sizeof(item));
+        memcpy(data, &item, sizeof(item));
+        current->set_data(data);
     }
 };
 
@@ -363,6 +447,29 @@ public:
         }
         delete (current);
         LinkedList<type>::size--;
+    }
+
+    void insert(int index, type item) {
+        Node *node = new Node;
+        void *data = malloc(sizeof(item));
+        memcpy(data, &item, sizeof(item));
+        node->set_data(data);
+        if (index == 0) {
+            node->set_link(LinkedList<type>::head);
+            LinkedList<type>::head = node;
+            Node *next = (Node *) LinkedList<type>::head->get_link();
+            next->set_back_link(LinkedList<type>::head);
+        } else {
+            Node *current = LinkedList<type>::head;
+            for (int i = 0; i < index - 1; ++i) {
+                current = (Node *) current->get_link();
+            }
+            Node *next = (Node *) current->get_link();
+            current->set_link(node);
+            node->set_link(next);
+            next->set_back_link(node);
+        }
+        LinkedList<type>::size++;
     }
 };
 
